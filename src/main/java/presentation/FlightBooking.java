@@ -58,9 +58,8 @@ public class FlightBooking extends JFrame {
 	private ButtonGroup fareButtonGroup = new ButtonGroup();  
 	
 	private JButton lookforFlights = null;
-	private DefaultListModel<ConcreteFlight> flightInfo = new DefaultListModel<ConcreteFlight>();
-
-	
+	private JComboBox<String> flightInfo = new JComboBox<String>();
+	private JComboBox<ConcreteFlight> flightInfonew = new JComboBox<ConcreteFlight>();
 	private JList<ConcreteFlight> flightList = null;
 	private JButton bookFlight = null;
 	
@@ -125,17 +124,15 @@ public class FlightBooking extends JFrame {
 		lblDepartCity.setBounds(21, 11, 103, 16);
 		contentPane.add(lblDepartCity);
 		
-		arrivalCity = new JTextField();
-		arrivalCity.setText("Bilbo");
-		arrivalCity.setBounds(99, 34, 243, 26);
-		contentPane.add(arrivalCity);
-		arrivalCity.setColumns(10);
-		
-		departCity = new JTextField();
-		departCity.setText("Donostia");
-		departCity.setBounds(99, 6, 243, 26);
-		contentPane.add(departCity);
-		departCity.setColumns(10);
+		String[] arrivals = {"Bilbo", "Donostia", "Sevilla", "Madrid"};
+		JComboBox<String> arrivalsnew = new JComboBox<String>(arrivals);
+		arrivalsnew.setBounds(99, 34, 243, 26);
+		contentPane.add(arrivalsnew);
+
+		String[] departures = {"Bilbo", "Donostia", "Sevilla", "Madrid"};
+		JComboBox<String> departuresnew = new JComboBox<String>(departures);
+		departuresnew.setBounds(99, 6, 243, 26);
+		contentPane.add(departuresnew);
 		
 		
 		lblYear = new JLabel("Year:");
@@ -200,49 +197,58 @@ public class FlightBooking extends JFrame {
 		lookforFlights = new JButton("Look for Concrete Flights");
 		lookforFlights.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Action performed!");
+				String selectedArrival = (String) arrivalsnew.getSelectedItem();
+
+				String selectedDeparture = (String) departuresnew.getSelectedItem();
+
 				bookFlight.setEnabled(true);
-				flightInfo.clear();
 				bookFlight.setText("");
 				
 				java.util.Date date =newDate(Integer.parseInt(year.getText()),months.getSelectedIndex(),Integer.parseInt(day.getText()));
 				 
-				concreteFlightCollection=businessLogic.getConcreteFlights(departCity.getText(),arrivalCity.getText(),date);
-				for (ConcreteFlight f : concreteFlightCollection) 
-					flightInfo.addElement(f); 
+				concreteFlightCollection=businessLogic.getConcreteFlights(selectedDeparture,selectedArrival,date);
+				ConcreteFlight[] newflights = new ConcreteFlight[concreteFlightCollection.size()];
+				int i = 0;
+				for (ConcreteFlight f : concreteFlightCollection) {
+					System.out.println(f.toString());
+					newflights[i] = f;
+					i++;
+				}
+				contentPane.remove(flightInfo);
+				//flightInfo = new JComboBox<String>(newflights);
+				flightInfonew = new JComboBox<ConcreteFlight>(newflights);	
+				flightInfonew.setBounds(64, 159, 336, 71);
+				contentPane.add(flightInfonew);	
+				flightInfonew.addActionListener (new ActionListener () {
+					public void actionPerformed(ActionEvent e) {
+						System.out.println("Item selected on list");  										 
+							selectedConcreteFlight = (ConcreteFlight) flightInfonew.getSelectedItem();
+							bookFlight.setEnabled(true);
+							bussinesTicket.setEnabled(selectedConcreteFlight.getBusinessNumber() != 0);
+							firstTicket.setEnabled(selectedConcreteFlight.getFirstNumber() !=0);
+							touristTicket.setEnabled(selectedConcreteFlight.getTouristNumber() != 0);
+							bookFlight.setText("Book: "+selectedConcreteFlight);  // TODO Auto-generated Event stub valueChanged()
+					}
+				});		
 				if (concreteFlightCollection.isEmpty()) searchResult.setText("No flights in that city in that date");
 				else searchResult.setText("Choose an available flight in this list:");
+				 
 			}
 		});
 		lookforFlights.setBounds(81, 90, 261, 40);
 		contentPane.add(lookforFlights);	
-		
 		jLabelResult = new JLabel("");
 		jLabelResult.setBounds(109, 180, 243, 16);
 		contentPane.add(jLabelResult);
-		
 		flightList = new JList<ConcreteFlight>();
-		flightList.setModel(flightInfo);
-		flightList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-				if (e.getValueIsAdjusting()) return; // The event is activated twice: Before the value is changed, and after changed 
-													 // We need to act only after changed 
-				if (!flightList.isSelectionEmpty()){  
-													 
-					selectedConcreteFlight = (ConcreteFlight) flightList.getSelectedValue();
-					bookFlight.setEnabled(true);
-					bookFlight.setText("Book: "+selectedConcreteFlight);  // TODO Auto-generated Event stub valueChanged()
-				}
-			}
-		});
-		
-		flightListScrollPane.setBounds(new Rectangle(64, 159, 336, 71));
-		flightListScrollPane.setViewportView(flightList);
-		contentPane.add(flightListScrollPane);
-		
-		
+		flightInfonew.setBounds(64, 159, 336, 71);
+		flightInfo.setBounds(64, 159, 336, 71);
+		contentPane.add(flightInfo);	
 		bookFlight = new JButton("");
 		bookFlight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("book clicked!");
 				int num=0;
 				boolean error=false;
 				if (bussinesTicket.isSelected()) { 
