@@ -1,5 +1,7 @@
 package presentation;
-
+/*
+ * Mikel, Urtats, Erik eta amaia.
+ */
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;
