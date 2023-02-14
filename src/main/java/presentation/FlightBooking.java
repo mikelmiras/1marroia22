@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -75,7 +76,8 @@ public class FlightBooking extends JFrame {
 	
 	
 	private ConcreteFlight selectedConcreteFlight;
-	
+	private DefaultComboBoxModel departures;
+	private DefaultComboBoxModel arrivals;
 	
 
 	/**
@@ -125,9 +127,10 @@ public class FlightBooking extends JFrame {
 		lblDepartCity = new JLabel("Depart City");
 		lblDepartCity.setBounds(21, 11, 103, 16);
 		contentPane.add(lblDepartCity);
-		
-		String[] arrivals = {"Bilbo", "Donostia", "Sevilla", "Madrid"};
-		JComboBox<String> arrivalsnew = new JComboBox<String>(arrivals);
+		arrivals = new DefaultComboBoxModel();
+		JComboBox arrivalsnew = new JComboBox();
+		arrivalsnew.setModel(arrivals);
+		arrivals.addElement("Bilbo");
 		arrivalsnew.setBounds(99, 34, 243, 26);
 		contentPane.add(arrivalsnew);
 
@@ -135,7 +138,17 @@ public class FlightBooking extends JFrame {
 		JComboBox<String> departuresnew = new JComboBox<String>(departures);
 		departuresnew.setBounds(99, 6, 243, 26);
 		contentPane.add(departuresnew);
-		
+		departuresnew.addActionListener (new ActionListener () {
+					public void actionPerformed(ActionEvent e) {
+						System.out.println("Item selected on list");  										 
+							List<String> arrivalsfrom = businessLogic.getArrivalCitiesFrom(departuresnew.getSelectedItem().toString());
+							int i = 0;
+							arrivals.removeAllElements();
+							for (String a : arrivalsfrom){
+								arrivals.addElement(a);
+							}
+					}
+				});		
 		
 		lblYear = new JLabel("Year:");
 		lblYear.setBounds(21, 62, 33, 16);
