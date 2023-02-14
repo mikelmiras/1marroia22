@@ -65,7 +65,7 @@ public class FlightBooking extends JFrame {
 	private JComboBox<ConcreteFlight> flightInfonew = new JComboBox<ConcreteFlight>();
 	private JList<ConcreteFlight> flightList = null;
 	private JButton bookFlight = null;
-	
+	private JComboBox departuresnew;
 	
 
 	
@@ -78,8 +78,7 @@ public class FlightBooking extends JFrame {
 	private ConcreteFlight selectedConcreteFlight;
 	private DefaultComboBoxModel departures;
 	private DefaultComboBoxModel arrivals;
-	
-
+	private DefaultComboBoxModel flights;	
 	/**
 	 * Launch the application.
 	 */
@@ -99,14 +98,20 @@ public class FlightBooking extends JFrame {
 	}
 	
 	//Custom operations
-	public void setBusinessLogic(FlightManager g) {businessLogic = g;}
+	public void setBusinessLogic(FlightManager g) {
+		departures = new DefaultComboBoxModel();
+		businessLogic = g;
+		departuresnew.setModel(departures);
+		for (String d: businessLogic.getAllDepartingCities()){
+			departures.addElement(d);
+		 }
+	}
 	
 	private Date newDate(int year,int month,int day) {
 
 	     Calendar calendar = Calendar.getInstance();
 	     calendar.set(year, month, day,0,0,0);
 	     calendar.set(Calendar.MILLISECOND, 0);
-
 	     return calendar.getTime();
 	}
 	/**
@@ -133,9 +138,12 @@ public class FlightBooking extends JFrame {
 		arrivals.addElement("Bilbo");
 		arrivalsnew.setBounds(99, 34, 243, 26);
 		contentPane.add(arrivalsnew);
-
-		String[] departures = {"Bilbo", "Donostia", "Sevilla", "Madrid"};
-		JComboBox<String> departuresnew = new JComboBox<String>(departures);
+		flights = new DefaultComboBoxModel();
+		flightInfonew = new JComboBox();
+		flightInfonew.setModel(flights);	
+		flightInfonew.setBounds(64, 159, 336, 71);
+		contentPane.add(flightInfonew);	
+		departuresnew = new JComboBox();
 		departuresnew.setBounds(99, 6, 243, 26);
 		contentPane.add(departuresnew);
 		departuresnew.addActionListener (new ActionListener () {
@@ -223,18 +231,11 @@ public class FlightBooking extends JFrame {
 				java.util.Date date =newDate(Integer.parseInt(year.getText()),months.getSelectedIndex(),Integer.parseInt(day.getText()));
 				 
 				concreteFlightCollection=businessLogic.getConcreteFlights(selectedDeparture,selectedArrival,date);
-				ConcreteFlight[] newflights = new ConcreteFlight[concreteFlightCollection.size()];
-				int i = 0;
+				flights.removeAllElements();
 				for (ConcreteFlight f : concreteFlightCollection) {
-					System.out.println(f.toString());
-					newflights[i] = f;
-					i++;
+					flights.addElement(f);
 				}
-				contentPane.remove(flightInfo);
 				//flightInfo = new JComboBox<String>(newflights);
-				flightInfonew = new JComboBox<ConcreteFlight>(newflights);	
-				flightInfonew.setBounds(64, 159, 336, 71);
-				contentPane.add(flightInfonew);	
 				flightInfonew.addActionListener (new ActionListener () {
 					public void actionPerformed(ActionEvent e) {
 						System.out.println("Item selected on list");  										 
