@@ -1,6 +1,6 @@
 package presentation;
 /*
- * Mikel, Urtats, Erik eta amaia.
+ * Mikel, Urtats, Erik eta Amaia.
  */
 
 import javax.swing.JPanel;
