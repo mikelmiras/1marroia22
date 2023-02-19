@@ -4,12 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
+@Entity
 public class Flight {
-	
+@Id
 String flightCode;
 String departingCity;
 String arrivingCity;
+@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
 Collection<ConcreteFlight> concreteFlights;
 
 public Flight(String flightCode, String departingCity, String arrivingCity) {

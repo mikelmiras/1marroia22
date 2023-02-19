@@ -1,0 +1,37 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2023-02-19 21:17:11 #1 store] 
+Database 'C:\Users\urtat\OneDrive\Escritorio\1marroia22\flightManager.odb' is opened by 8308@DESKTOP-4RLGBMM
+
+[2023-02-19 21:17:11 #2 type.registry] 
+New type domain.Flight
+
+[2023-02-19 21:17:11 #3 type] 
+Type domain.Flight is not enhanced.
+
+[2023-02-19 21:17:11 #4 type.registry] 
+New type domain.ConcreteFlight
+
+[2023-02-19 21:17:11 #5 type] 
+Type domain.ConcreteFlight is not enhanced.
+
+[2023-02-19 21:17:11 #6 type.registry] 
+New type java.util.ArrayList<java.lang.Object>
+
+[2023-02-19 21:17:11 #7 type.registry] 
+New type java.util.ArrayList<domain.ConcreteFlight>
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2023-02-19 21:17:42 #1 store] 
+Database 'C:\Users\urtat\OneDrive\Escritorio\1marroia22\flightManager.odb' has been recovered (tr. 1-12)
+
+[2023-02-19 21:17:42 #2 store] 
+Database 'C:\Users\urtat\OneDrive\Escritorio\1marroia22\flightManager.odb' is opened by 16140@DESKTOP-4RLGBMM
+
+[2023-02-19 21:17:42 #3 type] 
+Type domain.Flight is not enhanced.
+
+[2023-02-19 21:17:42 #4 type] 
+Type domain.ConcreteFlight is not enhanced.
+

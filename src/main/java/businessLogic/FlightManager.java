@@ -13,11 +13,24 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import dataAccess.Fligth_objectdbAccess;
 import domain.ConcreteFlight;
 import domain.Flight;
 
 public class FlightManager implements FlightManagerInterface{
-	ArrayList<Flight> flightsDB= new ArrayList<Flight>();
+	Fligth_objectdbAccess flightsDB= new Fligth_objectdbAccess();
+	
+	
+
+	
+	private Date newDate(int year,int month,int day) {
+
+	     Calendar calendar = Calendar.getInstance();
+	     calendar.set(year, month, day,0,0,0);
+	     calendar.set(Calendar.MILLISECOND, 0);
+
+	     return calendar.getTime();
+	}		
 
 		public FlightManager () {
 			
@@ -78,19 +91,25 @@ public class FlightManager implements FlightManagerInterface{
 			
 			Flight f7 = new Flight("F7","Sevilla","Granada");
 
-			flightsDB.add(f1);
-			flightsDB.add(f2);
-			flightsDB.add(f3);
-			flightsDB.add(f4);
-			flightsDB.add(f5);
-			flightsDB.add(f6);
-			flightsDB.add(f7);
+			flightsDB.storeFlight(f1);
+			flightsDB.storeFlight(f2);
+			flightsDB.storeFlight(f3);
+			flightsDB.storeFlight(f4);
+			flightsDB.storeFlight(f5);
+			flightsDB.storeFlight(f6);
+			flightsDB.storeFlight(f7);
 
 			
 		}
-				
 		public List<String> getAllDepartingCities(){
-
+			
+			
+			return flightsDB.getDepartingCities();
+			
+			
+			/*			
+				LEHENENGO MARROIAREN KODEA
+			
 			if (flightsDB.isEmpty()) return new ArrayList<String>();
 			//A set is used to avoid duplicates
 			SortedSet<String> setDepartingCities = new TreeSet<String>();
@@ -98,10 +117,16 @@ public class FlightManager implements FlightManagerInterface{
 			while (i.hasNext())
 				setDepartingCities.add(i.next().getDepartingCity());
 			return new ArrayList<String>(setDepartingCities);			
+			*/
 		}
 		
 		public List<String> getArrivalCitiesFrom(String departingCity){
 
+			return flightsDB.getArrivals(departingCity);
+			
+			/*
+	 				LEHENENGO MARROIAREN KODEA
+			
 			List<String> arrivalCities = new ArrayList<String>();
 			Iterator<Flight> i=flightsDB.iterator();
 			Flight f;
@@ -111,10 +136,17 @@ public class FlightManager implements FlightManagerInterface{
 					arrivalCities.add(f.getArrivingCity());
 			}
 			Collections.sort(arrivalCities);
-			return arrivalCities;			
+			return arrivalCities;
+			*/			
 		}
 		
 		public Collection<ConcreteFlight> getConcreteFlights(String departingCity, String arrivingCity, Date date) {
+			
+			return flightsDB.getFlights(departingCity, arrivingCity, date);
+			
+			/*
+				LEHENENGO MARROIAREN KODEA
+			
 			ArrayList<ConcreteFlight> res = new ArrayList<ConcreteFlight>();
 			for (Flight a : flightsDB) {
 				if ((a.getArrivingCity().equals(arrivingCity))&&(a.getDepartingCity().equals(departingCity)))
@@ -122,14 +154,13 @@ public class FlightManager implements FlightManagerInterface{
 						if (c.getDate().equals(date)) res.add(c);
 						
 			}
-			return res;				
-	}
-		private Date newDate(int year,int month,int day) {
-
-		     Calendar calendar = Calendar.getInstance();
-		     calendar.set(year, month, day,0,0,0);
-		     calendar.set(Calendar.MILLISECOND, 0);
-
-		     return calendar.getTime();
-		}		
+			return res;
+			*/				
+		}
+		
+		
+		public void bookSeat(ConcreteFlight cFlight , String ticket) 
+		{
+			flightsDB.bookSeat(cFlight, ticket);
+		}
 }
