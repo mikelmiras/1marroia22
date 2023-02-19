@@ -1,6 +1,7 @@
 package presentation;
 /*
  * Mikel, Urtats, Erik eta Amaia.
+ * 2023
  */
 
 import javax.swing.JPanel;
